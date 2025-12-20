@@ -5,13 +5,9 @@ const articleRoutes = require('./routes/article');
 const mongoose = require('mongoose');
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/my-blog",
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+mongoose.connect("mongodb://localhost:27017/my-blog-db")
     .then(() => console.log("Connexion à mongoDB : réussie !"))
-    .catch(() => console.log("Connextion à mongoDB : échec !"));
+    .catch((err) => console.log("Connextion à mongoDB : échec !", err));
 
 // It's very important to set the header configuration, without it, you can't get any data from your database !!!
 app.use((req, res, next) => {

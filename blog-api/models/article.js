@@ -5,6 +5,8 @@ const articleSchema = mongoose.Schema({
     textContent : { type : String, required : true },
     image : { type : String, required : false },
     author : { type: String, required : true }
-})
+}, {
+    versionKey : false,
+});
 
 module.exports = mongoose.model("Article", articleSchema);

@@ -9,5 +9,6 @@ router.post('/create', multerUploader.none(), articleCtrl.create);
 router.get('/', articleCtrl.getAllArticles);
 router.get('/:id', articleCtrl.getArticleById);
 router.patch('/edit/:id', multerUploader.none(), articleCtrl.edit); 
+router.delete('/delete/:id', articleCtrl.delete);
 
 module.exports = router;
