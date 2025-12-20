@@ -4,13 +4,17 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { postFetchQuery } from "./helpers/requestHelpers";
+
+const baseApiUrl = process.env.BASE_API_URL as string;
 
 const FormSchema = z.object({
     id: z.string(),
     title : z.string().min(5, { message: "The title must be at least 5 characters long" }),
-    content : z.string().min(20, { message: "The content must be at least 20 characters long" }),
+    textContent : z.string().min(20, { message: "The content must be at least 20 characters long" }),
     author : z.string({ message: "Author field cannot be empty"}),
     image : z.string(),
 });
@@ -27,7 +31,7 @@ const CreateArticle = FormSchema.omit({ id: true, image: true });
 export type State = {
     errors?: {
         title?: string[];
-        content?: string[];
+        textContent?: string[];
         author?: string[];
     };
     message?: string | null;
@@ -45,7 +49,7 @@ export async function createArticle(prevState: State, formData: FormData) {
 
     const validatedDatas = CreateArticle.safeParse({
         title : formData.get("title"),
-        content : formData.get("content"),
+        textContent : formData.get("content"),
         author : formData.get("author"),
     });
 
@@ -59,13 +63,49 @@ export async function createArticle(prevState: State, formData: FormData) {
         }
     }
 
-    const { title, content, author } = validatedDatas.data;
-
-    console.log(title);
-    console.log(content);
-    console.log(author);
+    const { title, textContent, author } = validatedDatas.data;
 
     // TODO : Contact the Express API to create the article
+    // console.log();
+    const url = `${baseApiUrl}/article/create`;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const body = {
+            title,
+            textContent,
+            image: "",
+            author,
+    };
+
+    // postFetchQuery(url, headers, body);
+
+    await fetch (`${baseApiUrl}/article/create`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            title,
+            textContent,
+            image: "",
+            author,
+        })
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } 
+        else {
+            throw new Error('Une erreur est survenue', {cause: response});
+        }
+    })
+    .then((data) => {
+        console.log("API Response :", data);
+    })
+    .catch((error) => {
+        console.error("The api responded with an error : ", error);
+    });
 
     revalidatePath('/articles/create');
     redirect('/articles/create');
