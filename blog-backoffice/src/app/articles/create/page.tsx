@@ -17,7 +17,13 @@ export default function ArticlesCreatePage () {
 
     return (
         <div>
-
+            {/* 
+                Ici on aura un <main></main> et dedans on incluera notre fragment UI form
+                Récupérer la partie formulaire et la placer dans un fichier ui
+                "create-article-form.tsx"
+                Déplacer la logique state formaction dans le composant
+            
+            */}
             <div className="">
                 <h1>Create an Article</h1>
                 <div className="w-full ">
