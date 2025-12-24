@@ -21,6 +21,7 @@ const FormSchema = z.object({
 
 // Validator for the article creation action.
 const CreateArticle = FormSchema.omit({ id: true, image: true });
+const UpdateArticle = FormSchema.omit({ id: true, image: true });
 
 
 /**
@@ -110,3 +111,52 @@ export async function createArticle(prevState: State, formData: FormData) {
     revalidatePath('/articles/create');
     redirect('/articles/create');
 }   
+
+export async function updateArticle(id: string, prevState: State, formData: FormData) {
+
+    const validatedDatas = UpdateArticle.safeParse({
+        title : formData.get("title"),
+        textContent : formData.get("content"),
+        author : formData.get("author"),
+    });
+
+    // If the data are not valid, we return the errors to the client
+    if (!validatedDatas.success) {
+        return {
+            errors: validatedDatas.error.flatten().fieldErrors,
+            message: "There are errors in the form, please correct them before submitting again."
+        }
+    }
+
+    const { title, textContent, author } = validatedDatas.data;
+
+    await fetch (`${baseApiUrl}/article/edit/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            title,
+            textContent,
+            image: "",
+            author,
+        })
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } 
+        else {
+            throw new Error('Une erreur est survenue', {cause: response});
+        }
+    })
+    .then((data) => {
+        console.log("API Response :", data);
+    })
+    .catch((error) => {
+        console.error("The api responded with an error : ", error);
+    }); 
+
+    revalidatePath(`/articles/${id}/edit`);
+    redirect(`/articles/${id}/edit`);
+}

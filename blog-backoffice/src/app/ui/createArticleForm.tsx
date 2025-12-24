@@ -1,3 +1,7 @@
+/**
+ * This component will be rendered as a client component
+ * the rendering of this component will be optimized
+ */
 "use client";
 
 import { useActionState } from "react";
