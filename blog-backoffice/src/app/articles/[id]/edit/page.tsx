@@ -3,7 +3,8 @@ import { fetchArticleById } from "@/app/lib/data";
 import Form from "@/app/ui/editArticleForm";
 
 
-export default async function ArticlesEditPage (props : { params : Promise<{ id : string } > }) {
+// export default async function ArticlesEditPage (props : { params : Promise<{ id : string } > }) {
+export default async function ArticlesEditPage (props : { params : { id : string } }) {
     const params = await props.params;
     const id = params.id;
     const article = await fetchArticleById(id);
