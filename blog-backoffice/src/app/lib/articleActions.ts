@@ -98,7 +98,7 @@ export async function createArticle(prevState: State, formData: FormData) {
             return response.json();
         } 
         else {
-            throw new Error('Une erreur est survenue', {cause: response});
+            throw new Error('An error occured while creating the article', {cause: response});
         }
     })
     .then((data) => {
@@ -147,7 +147,7 @@ export async function updateArticle(id: string, prevState: State, formData: Form
             return response.json();
         } 
         else {
-            throw new Error('Une erreur est survenue', {cause: response});
+            throw new Error('An error occured while updating the article', {cause: response});
         }
     })
     .then((data) => {
@@ -159,4 +159,18 @@ export async function updateArticle(id: string, prevState: State, formData: Form
 
     revalidatePath(`/articles/${id}/edit`);
     redirect(`/articles/${id}/edit`);
+}
+
+export async function deleteArticle(id: string) {
+    await fetch(`${baseApiUrl}/article/delete/${id}`, {
+        method: "DELETE",
+    })
+    .then((response) => {
+        if (response.ok) {
+            console.log(`Article ${id} deleted successfully`);
+        } else {
+            throw new Error('An error occured while deleting the article', {cause: response});
+        }
+    });
+    revalidatePath('/articles');
 }

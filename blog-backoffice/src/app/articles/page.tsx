@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Article } from "../Types/Article";
+import { deleteArticle } from "../lib/articleActions";
+import DeleteArticle from "../ui/deleteArticleForm";
 
 
 async function getArticles() {
@@ -30,6 +32,7 @@ export default async function ArticlesList () {
                                 <th>Author</th>
                                 <th>Content</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
         
@@ -45,8 +48,11 @@ export default async function ArticlesList () {
                                             <Link
                                                 href={`/articles/${article._id}/edit`}
                                             >
-                                                editer
+                                                Editer
                                             </Link>
+                                        </td>
+                                        <td>
+                                            <DeleteArticle id={article._id} />
                                         </td>
                                     </tr>
                                 )
