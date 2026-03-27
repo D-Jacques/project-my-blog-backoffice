@@ -12,7 +12,7 @@ import { postFetchQuery } from "./helpers/requestHelpers";
 const baseApiUrl = process.env.BASE_API_URL as string;
 
 const FormSchema = z.object({
-    id: z.string(),
+    id: z.number(),
     title : z.string().min(5, { message: "The title must be at least 5 characters long" }),
     textContent : z.string().min(20, { message: "The content must be at least 20 characters long" }),
     author : z.string({ message: "Author field cannot be empty"}),
@@ -66,8 +66,6 @@ export async function createArticle(prevState: State, formData: FormData) {
 
     const { title, textContent, author } = validatedDatas.data;
 
-    // TODO : Contact the Express API to create the article
-    // console.log();
     const url = `${baseApiUrl}/article/create`;
     const headers = {
         "Content-Type": "application/json",
@@ -112,7 +110,7 @@ export async function createArticle(prevState: State, formData: FormData) {
     redirect('/articles/create');
 }   
 
-export async function updateArticle(id: string, prevState: State, formData: FormData) {
+export async function updateArticle(id: number, prevState: State, formData: FormData) {
 
     const validatedDatas = UpdateArticle.safeParse({
         title : formData.get("title"),
@@ -161,7 +159,7 @@ export async function updateArticle(id: string, prevState: State, formData: Form
     redirect(`/articles/${id}/edit`);
 }
 
-export async function deleteArticle(id: string) {
+export async function deleteArticle(id: number) {
     await fetch(`${baseApiUrl}/article/delete/${id}`, {
         method: "DELETE",
     })

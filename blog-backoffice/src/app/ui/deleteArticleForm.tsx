@@ -1,6 +1,6 @@
 import { deleteArticle } from "../lib/articleActions"
 
-export default function DeleteArticle ({ id }: { id: string }) {
+export default function DeleteArticle ({ id }: { id: number }) {
 
     const deleteArticleById = deleteArticle.bind(null, id);
 

@@ -46,13 +46,13 @@ export default async function ArticlesList () {
                                         <td>{article.textContent}</td>
                                         <td>
                                             <Link
-                                                href={`/articles/${article._id}/edit`}
+                                                href={`/articles/${article.id}/edit`}
                                             >
                                                 Editer
                                             </Link>
                                         </td>
                                         <td>
-                                            <DeleteArticle id={article._id} />
+                                            <DeleteArticle id={article.id} />
                                         </td>
                                     </tr>
                                 )
