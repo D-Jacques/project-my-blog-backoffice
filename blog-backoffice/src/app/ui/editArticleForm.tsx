@@ -10,7 +10,7 @@ export default function EditArticleForm ({
     article: articleForm
 }) {
     const initialState : State = { message : null, errors : {} };
-    const updateArticleById = updateArticle.bind(null, article._id);
+    const updateArticleById = updateArticle.bind(null, article.id);
     const [state, formAction] = useActionState(updateArticleById, initialState);
 
     return (
