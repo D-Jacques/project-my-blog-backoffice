@@ -27,7 +27,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="flex h-screen">
+          <div className="w-1/5 bg-sky-500/75 border-r-5 border-white" id="nav-container">
+            <h1>Nav</h1>
+            {/* Mettre en place un espace de navigation ici l'écran du Back-Office sera genre 20 Nav/80 children */}
+          </div>
+          <div className="w-4/5 bg-blue-900/50 pl-2" id="content-container">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );
